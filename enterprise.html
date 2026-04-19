@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Suite - Upwork</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="media.css">
+    <script src="https://kit.fontawesome.com/28580fa11d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Role Switcher -->
+    <div style="background-color: #f5f5f5; padding: 12px 0; border-bottom: 1px solid #ddd; position: relative; z-index: 10;">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 15px; font-size: 14px; color: #666;">
+          <span>👤 Current Role:</span>
+          <span style="background-color: #14a800; color: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 12px;" id="roleIndicator">Guest</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="guestBtn" onclick="setRole('guest')">Guest</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="freelancerBtn" onclick="setRole('freelancer')">Freelancer</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="clientBtn" onclick="setRole('client')">Client</button>
+        </div>
+      </div>
+    </div>
+    <script src="role-manager.js"></script>
+    <script>
+      function setRole(role) {
+        localStorage.setItem('userRole', role);
+        location.reload();
+      }
+      function updateRoleButtons() {
+        const role = localStorage.getItem('userRole') || 'guest';
+        document.getElementById('guestBtn').classList.toggle('active', role === 'guest');
+        document.getElementById('freelancerBtn').classList.toggle('active', role === 'freelancer');
+        document.getElementById('clientBtn').classList.toggle('active', role === 'client');
+      }
+      document.addEventListener('DOMContentLoaded', updateRoleButtons);
+    </script>
+    <nav class="first-nav">
+        <div class="nav-container-left">
+            <a href="index.html"><img class="logo" src="https://image.status.io/z6aeO6kAGsAG.png" alt="Upwork Logo"></a>
+        </div>
+        <div class="nav-container-right">
+            <a href="index.html">Back to Home</a>
+        </div>
+    </nav>
+    <hr class="nav-line">
+    
+    <div style="max-width: 1200px; margin: 50px auto; padding: 20px;">
+        <h1 style="text-align: center; margin-bottom: 50px;">Upwork Enterprise Suite</h1>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px;">
+            <div>
+                <h2>Scale with Enterprise Suite</h2>
+                <p style="font-size: 18px; line-height: 1.6; margin: 20px 0;">A fast and secure way to achieve long-term success for your business goals.</p>
+                
+                <ul style="font-size: 16px; line-height: 2;">
+                    <li><i class="fa-solid fa-pen"></i> Access expert talent to fill your skill gaps</li>
+                    <li><i class="fa-solid fa-suitcase"></i> Control your workflow: hire, classify and pay your talent</li>
+                    <li><i class="fa-solid fa-headphones"></i> Partner with Upwork for end-to-end support</li>
+                </ul>
+                
+                <button style="padding: 12px 30px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 20px;">Get Started</button>
+            </div>
+            
+            <div>
+                <img src="https://res.cloudinary.com/upwork-cloud-acquisition-prod/image/upload/f_auto,q_auto/brontes/for-enterprise/enterprise-image@2x.png" alt="Enterprise" style="width: 100%; max-width: 400px;">
+            </div>
+        </div>
+        
+        <div style="background-color: #f8f8f8; padding: 40px; border-radius: 8px;">
+            <h2 style="text-align: center; margin-bottom: 30px;">Key Features</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                <div>
+                    <h3>Advanced Security</h3>
+                    <p>Enterprise-grade security features to protect your sensitive data and ensure compliance with industry standards.</p>
+                </div>
+                
+                <div>
+                    <h3>Dedicated Support</h3>
+                    <p>Access to a dedicated account manager who understands your business needs and can provide personalized support.</p>
+                </div>
+                
+                <div>
+                    <h3>Custom Solutions</h3>
+                    <p>Tailor the platform to your specific requirements with custom integrations and workflows.</p>
+                </div>
+                
+                <div>
+                    <h3>Analytics & Insights</h3>
+                    <p>Get detailed analytics and insights to track performance, productivity, and ROI across all your projects.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

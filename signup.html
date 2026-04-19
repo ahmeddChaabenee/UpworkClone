@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Upwork</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="media.css">
+    <script src="https://kit.fontawesome.com/28580fa11d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Role Switcher -->
+    <div style="background-color: #f5f5f5; padding: 12px 0; border-bottom: 1px solid #ddd; position: relative; z-index: 10;">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 15px; font-size: 14px; color: #666;">
+          <span>👤 Current Role:</span>
+          <span style="background-color: #14a800; color: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 12px;" id="roleIndicator">Guest</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="guestBtn" onclick="setRole('guest')">Guest</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="freelancerBtn" onclick="setRole('freelancer')">Freelancer</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="clientBtn" onclick="setRole('client')">Client</button>
+        </div>
+      </div>
+    </div>
+    <script src="role-manager.js"></script>
+    <script>
+      function setRole(role) {
+        localStorage.setItem('userRole', role);
+        location.reload();
+      }
+      function updateRoleButtons() {
+        const role = localStorage.getItem('userRole') || 'guest';
+        document.getElementById('guestBtn').classList.toggle('active', role === 'guest');
+        document.getElementById('freelancerBtn').classList.toggle('active', role === 'freelancer');
+        document.getElementById('clientBtn').classList.toggle('active', role === 'client');
+      }
+      document.addEventListener('DOMContentLoaded', updateRoleButtons);
+    </script>
+    <nav class="first-nav">
+        <div class="nav-container-left">
+            <a href="index.html"><img class="logo" src="https://image.status.io/z6aeO6kAGsAG.png" alt="Upwork Logo"></a>
+        </div>
+        <div class="nav-container-right">
+            <a href="index.html">Back to Home</a>
+        </div>
+    </nav>
+    <hr class="nav-line">
+    
+    <div style="max-width: 500px; margin: 100px auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+        <h1 style="text-align: center; margin-bottom: 30px;">Sign Up for Upwork</h1>
+        
+        <form style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label for="fullname" style="display: block; margin-bottom: 5px; font-weight: 500;">Full Name</label>
+                <input type="text" id="fullname" placeholder="John Doe" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            
+            <div>
+                <label for="email" style="display: block; margin-bottom: 5px; font-weight: 500;">Email Address</label>
+                <input type="email" id="email" placeholder="you@example.com" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            
+            <div>
+                <label for="password" style="display: block; margin-bottom: 5px; font-weight: 500;">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            
+            <div>
+                <label style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" style="width: 18px; height: 18px;">
+                    <span>I'm looking for work (Freelancer)</span>
+                </label>
+            </div>
+            
+            <button type="submit" style="padding: 12px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: 500;">Sign Up</button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 20px;">Already have an account? <a href="login.html">Log In</a></p>
+    </div>
+</body>
+</html>

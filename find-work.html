@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Work - Upwork</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="media.css">
+    <script src="https://kit.fontawesome.com/28580fa11d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Role Switcher -->
+    <div style="background-color: #f5f5f5; padding: 12px 0; border-bottom: 1px solid #ddd; position: relative; z-index: 10;">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 15px; font-size: 14px; color: #666;">
+          <span>👤 Current Role:</span>
+          <span style="background-color: #14a800; color: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 12px;" id="roleIndicator">Guest</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="guestBtn" onclick="setRole('guest')">Guest</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="freelancerBtn" onclick="setRole('freelancer')">Freelancer</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="clientBtn" onclick="setRole('client')">Client</button>
+        </div>
+      </div>
+    </div>
+    <script src="role-manager.js"></script>
+    <script>
+      function setRole(role) {
+        localStorage.setItem('userRole', role);
+        location.reload();
+      }
+      function updateRoleButtons() {
+        const role = localStorage.getItem('userRole') || 'guest';
+        document.getElementById('guestBtn').classList.toggle('active', role === 'guest');
+        document.getElementById('freelancerBtn').classList.toggle('active', role === 'freelancer');
+        document.getElementById('clientBtn').classList.toggle('active', role === 'client');
+      }
+      document.addEventListener('DOMContentLoaded', updateRoleButtons);
+    </script>
+    <nav class="first-nav">
+        <div class="nav-container-left">
+            <a href="index.html"><img class="logo" src="https://image.status.io/z6aeO6kAGsAG.png" alt="Upwork Logo"></a>
+            <!-- <a href="find-talent.html" style="text-decoration: none; color: inherit;">Find Talent</a> -->
+            <a href="find-work.html" style="text-decoration: none; color: inherit;">Find Work</a>
+            <a href="why-upwork.html" style="text-decoration: none; color: inherit;">Why Upwork?</a>
+            <a href="enterprise.html" style="text-decoration: none; color: inherit;">Enterprise</a>
+        </div>
+        <div class="nav-container-right">
+            <span class="input-top">
+                <span class="icon-inside-field">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input class="search" type="text" placeholder="Search"/>
+            </span>
+            <!-- <a href="login.html">Log In</a>
+            <a href="signup.html">Sign Up</a> -->
+            <a href="freelancer-profile.html" data-role="freelancer" style="display: none;">Profile</a>
+            <a href="client-profile.html" data-role="client" style="display: none;">Profile</a>
+        </div>
+    </nav>
+    <hr class="nav-line">
+    
+    <div style="max-width: 1200px; margin: 50px auto; padding: 20px;">
+        <h1 style="margin-bottom: 30px;">Find Work Opportunities</h1>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h3 style="margin-top: 0;">Web Development Project</h3>
+                        <p style="color: #666; font-size: 14px;">Intermediate</p>
+                    </div>
+                    <span style="background-color: #14a800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px;">$500-$1000</span>
+                </div>
+                <p>Looking for a developer to build a responsive website with modern design and fast performance.</p>
+                <p style="color: #999; font-size: 12px;">Posted 2 days ago</p>
+                <button onclick="redirectToApplyJob()" style="display: block; padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; box-sizing: border-box;">Apply Now</button>
+            </div>
+            
+            <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h3 style="margin-top: 0;">Logo Design</h3>
+                        <p style="color: #666; font-size: 14px;">Beginner-Intermediate</p>
+                    </div>
+                    <span style="background-color: #14a800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px;">$200-$500</span>
+                </div>
+                <p>Need a modern, professional logo for my tech startup. Must work well in all formats.</p>
+                <p style="color: #999; font-size: 12px;">Posted 1 day ago</p>
+                <button onclick="redirectToApplyJob()" style="display: block; padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; box-sizing: border-box;">Apply Now</button>
+            </div>
+            
+            <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h3 style="margin-top: 0;">Blog Content Writing</h3>
+                        <p style="color: #666; font-size: 14px;">Intermediate</p>
+                    </div>
+                    <span style="background-color: #14a800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px;">$300-$600</span>
+                </div>
+                <p>Writing 10 high-quality blog posts about technology trends. Must include SEO optimization.</p>
+                <p style="color: #999; font-size: 12px;">Posted 3 days ago</p>
+                <button onclick="redirectToApplyJob()" style="display: block; padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; box-sizing: border-box;">Apply Now</button>
+            </div>
+            
+            <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h3 style="margin-top: 0;">Social Media Management</h3>
+                        <p style="color: #666; font-size: 14px;">Intermediate</p>
+                    </div>
+                    <span style="background-color: #14a800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px;">$800-$1500</span>
+                </div>
+                <p>Manage social media accounts for a growing e-commerce brand. 3-month contract.</p>
+                <p style="color: #999; font-size: 12px;">Posted 1 day ago</p>
+                <button onclick="redirectToApplyJob()" style="display: block; padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; box-sizing: border-box;">Apply Now</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

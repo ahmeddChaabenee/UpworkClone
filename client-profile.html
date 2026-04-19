@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Profile - Upwork</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="media.css">
+    <script src="https://kit.fontawesome.com/28580fa11d.js" crossorigin="anonymous"></script>
+    <style>
+        .profile-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .profile-header {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .profile-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1976d2, #0d47a1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: white;
+        }
+        .profile-info h1 {
+            margin-top: 0;
+            font-size: 28px;
+        }
+        .edit-btn {
+            padding: 10px 20px;
+            background-color: #14a800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #14a800;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            margin: 30px 0;
+        }
+        .section h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #14a800;
+            padding-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #1b1b1b;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .save-btn {
+            padding: 12px 30px;
+            background-color: #14a800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .job-item {
+            border-left: 4px solid #14a800;
+            padding: 15px;
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .job-item h3 {
+            margin-top: 0;
+        }
+        .applicants {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .applicant {
+            padding: 10px;
+            background: white;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .action-btn {
+            padding: 6px 12px;
+            background-color: #14a800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Role Switcher -->
+    <div style="background-color: #f5f5f5; padding: 12px 0; border-bottom: 1px solid #ddd; position: relative; z-index: 10;">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 15px; font-size: 14px; color: #666;">
+          <span>👤 Current Role:</span>
+          <span style="background-color: #14a800; color: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 12px;" id="roleIndicator">Guest</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="guestBtn" onclick="setRole('guest')">Guest</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="freelancerBtn" onclick="setRole('freelancer')">Freelancer</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="clientBtn" onclick="setRole('client')">Client</button>
+        </div>
+      </div>
+    </div>
+    <script src="role-manager.js"></script>
+    <script>
+      function setRole(role) {
+        localStorage.setItem('userRole', role);
+        location.reload();
+      }
+      function updateRoleButtons() {
+        const role = localStorage.getItem('userRole') || 'guest';
+        document.getElementById('guestBtn').classList.toggle('active', role === 'guest');
+        document.getElementById('freelancerBtn').classList.toggle('active', role === 'freelancer');
+        document.getElementById('clientBtn').classList.toggle('active', role === 'client');
+      }
+      document.addEventListener('DOMContentLoaded', updateRoleButtons);
+    </script>
+    <nav class="first-nav">
+        <div class="nav-container-left">
+            <a href="index.html"><img class="logo" src="https://image.status.io/z6aeO6kAGsAG.png" alt="Upwork Logo"></a>
+            <a href="find-talent.html" class="item-left" style="text-decoration: none; color: inherit;">
+                Find Talent <i class="fa-solid fa-angle-down"></i>
+            </a>
+            <!-- <a href="find-work.html" class="item-left" style="text-decoration: none; color: inherit;">
+                Find Work <i class="fa-solid fa-angle-down"></i> -->
+            </a>
+            <a href="why-upwork.html" class="item-left" style="text-decoration: none; color: inherit;">
+                Why Upwork? <i class="fa-solid fa-angle-down"></i>
+            </a>
+            <a href="enterprise.html" class="item-left" style="text-decoration: none; color: inherit;">Enterprise</a>
+        </div>
+        <div class="nav-container-right">
+            <a href="client-profile.html" style="margin-right: 20px;">Profile</a>
+            <a href="login.html">Log Out</a>
+        </div>
+    </nav>
+    <hr class="nav-line">
+    
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">🏢</div>
+            <div class="profile-info">
+                <h1 id="displayName">Tech Startup Inc.</h1>
+                <p style="color: #666; margin: 10px 0;">Building innovative solutions for the future</p>
+                <p style="color: #999; font-size: 14px;">Joined 2 years ago</p>
+                <button class="edit-btn" onclick="document.getElementById('profileForm').style.display = 'block'; this.style.display = 'none';">Edit Profile</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Jobs Posted</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$52,400</div>
+                <div class="stat-label">Total Spent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Active Freelancers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4.8/5</div>
+                <div class="stat-label">Avg Rating</div>
+            </div>
+        </div>
+
+        <div class="section" id="profileForm" style="display: none;">
+            <h2>Edit Your Profile</h2>
+            <form onsubmit="saveProfile(event)">
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company" value="Tech Startup Inc." required>
+                </div>
+                <div class="form-group">
+                    <label for="industry">Industry</label>
+                    <input type="text" id="industry" value="Technology / Software Development" placeholder="e.g., Technology, Design, Marketing" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Company Description</label>
+                    <textarea id="description" placeholder="Tell freelancers about your company">Building innovative solutions for the future. We're a team of passionate developers and designers working on cutting-edge technology.</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="email">Contact Email</label>
+                    <input type="email" id="email" value="contact@techstartup.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="url" id="website" value="https://techstartup.com" placeholder="https://yourcompany.com">
+                </div>
+                <button type="submit" class="save-btn">Save Changes</button>
+                <button type="button" class="save-btn" style="background-color: #999; margin-left: 10px;" onclick="document.getElementById('profileForm').style.display = 'none'; document.querySelector('.edit-btn').style.display = 'block';">Cancel</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Posted Jobs & Applicants</h2>
+            <div>
+                <div class="job-item">
+                    <h3>E-commerce Platform Development</h3>
+                    <p style="color: #666; margin: 5px 0;">Budget: $5,000 - $8,000 | Posted 15 days ago</p>
+                    <div class="applicants">
+                        <strong style="display: block; margin-bottom: 10px;">👥 3 Applicants</strong>
+                        <div class="applicant">
+                            <div>
+                                <strong>Alex Johnson</strong> - Full Stack Developer
+                                <div style="font-size: 12px; color: #999;">⭐ 4.9/5 (186 reviews)</div>
+                            </div>
+                            <div>
+                                <button class="action-btn">View Profile</button>
+                                <button class="action-btn">Hire</button>
+                            </div>
+                        </div>
+                        <div class="applicant">
+                            <div>
+                                <strong>Sarah Chen</strong> - Web Developer
+                                <div style="font-size: 12px; color: #999;">⭐ 4.7/5 (142 reviews)</div>
+                            </div>
+                            <div>
+                                <button class="action-btn">View Profile</button>
+                                <button class="action-btn">Hire</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="job-item">
+                    <h3>Mobile App Design</h3>
+                    <p style="color: #666; margin: 5px 0;">Budget: $2,000 - $4,000 | Posted 5 days ago</p>
+                    <div class="applicants">
+                        <strong style="display: block; margin-bottom: 10px;">👥 2 Applicants</strong>
+                        <div class="applicant">
+                            <div>
+                                <strong>Michael Smith</strong> - UI/UX Designer
+                                <div style="font-size: 12px; color: #999;">⭐ 4.8/5 (98 reviews)</div>
+                            </div>
+                            <div>
+                                <button class="action-btn">View Profile</button>
+                                <button class="action-btn">Hire</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="role-manager.js"></script>
+    <script>
+        function saveProfile(event) {
+            event.preventDefault();
+            const company = document.getElementById('company').value;
+            document.getElementById('displayName').textContent = company;
+            localStorage.setItem('clientName', company);
+            document.getElementById('profileForm').style.display = 'none';
+            document.querySelector('.edit-btn').style.display = 'inline-block';
+            alert('Profile updated successfully!');
+        }
+
+        // Load saved profile on page load
+        window.addEventListener('load', function() {
+            const savedName = localStorage.getItem('clientName');
+            if (savedName) {
+                document.getElementById('company').value = savedName;
+                document.getElementById('displayName').textContent = savedName;
+            }
+        });
+    </script>
+</body>
+</html>

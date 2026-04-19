@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Job - Upwork</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="media.css">
+    <script src="https://kit.fontawesome.com/28580fa11d.js" crossorigin="anonymous"></script>
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .form-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #14a800;
+            padding-bottom: 20px;
+        }
+        .form-header h1 {
+            margin: 0 0 10px 0;
+        }
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .section:last-child {
+            border-bottom: none;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #1b1b1b;
+            font-size: 18px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1b1b1b;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #14a800;
+            box-shadow: 0 0 5px rgba(20, 168, 0, 0.3);
+        }
+        .inline-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .submit-btn {
+            flex: 1;
+            padding: 14px;
+            background-color: #14a800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .cancel-btn {
+            flex: 1;
+            padding: 14px;
+            background-color: #999;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .submit-btn:hover {
+            background-color: #0d7d00;
+        }
+        .info-box {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #14a800;
+        }
+        .info-box p {
+            margin: 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Role Switcher -->
+    <div style="background-color: #f5f5f5; padding: 12px 0; border-bottom: 1px solid #ddd; position: relative; z-index: 10;">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 15px; font-size: 14px; color: #666;">
+          <span>👤 Current Role:</span>
+          <span style="background-color: #14a800; color: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 12px;" id="roleIndicator">Guest</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="guestBtn" onclick="setRole('guest')">Guest</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="freelancerBtn" onclick="setRole('freelancer')">Freelancer</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="clientBtn" onclick="setRole('client')">Client</button>
+        </div>
+      </div>
+    </div>
+    <script src="role-manager.js"></script>
+    <script>
+      function setRole(role) {
+        localStorage.setItem('userRole', role);
+        location.reload();
+      }
+      function updateRoleButtons() {
+        const role = localStorage.getItem('userRole') || 'guest';
+        document.getElementById('guestBtn').classList.toggle('active', role === 'guest');
+        document.getElementById('freelancerBtn').classList.toggle('active', role === 'freelancer');
+        document.getElementById('clientBtn').classList.toggle('active', role === 'client');
+      }
+      document.addEventListener('DOMContentLoaded', updateRoleButtons);
+    </script>
+    <nav class="first-nav">
+        <div class="nav-container-left">
+            <a href="index.html"><img class="logo" src="https://image.status.io/z6aeO6kAGsAG.png" alt="Upwork Logo"></a>
+            <a href="find-talent.html" class="item-left" style="text-decoration: none; color: inherit;">
+                Find Talent <i class="fa-solid fa-angle-down"></i>
+            </a>
+            <a href="why-upwork.html" class="item-left" style="text-decoration: none; color: inherit;">
+                Why Upwork? <i class="fa-solid fa-angle-down"></i>
+            </a>
+            <a href="enterprise.html" class="item-left" style="text-decoration: none; color: inherit;">Enterprise</a>
+        </div>
+        <div class="nav-container-right">
+            <a href="client-profile.html" style="margin-right: 20px;">Profile</a>
+            <a href="login.html">Log Out</a>
+        </div>
+    </nav>
+    <hr class="nav-line">
+
+    <div class="form-container">
+        <div class="form-header">
+            <h1>Post a New Job</h1>
+            <p style="color: #666; margin: 0;">Find the perfect freelancer for your project</p>
+        </div>
+
+        <form onsubmit="submitJob(event)">
+            <div class="section">
+                <h3>Job Details</h3>
+                
+                <div class="form-group">
+                    <label for="jobTitle">Job Title</label>
+                    <input type="text" id="jobTitle" placeholder="e.g., Build a responsive website" required>
+                    <small style="color: #999;">Be specific about the type of work you need</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" required>
+                        <option value="">Select a category...</option>
+                        <option value="web-dev">Web Development</option>
+                        <option value="design">Design & Creative</option>
+                        <option value="writing">Writing & Translation</option>
+                        <option value="marketing">Sales & Marketing</option>
+                        <option value="admin">Admin & Customer Support</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jobDescription">Job Description</label>
+                    <textarea id="jobDescription" placeholder="Describe your project, requirements, and what you're looking for in a freelancer" required></textarea>
+                    <small style="color: #999;">The more details you provide, the better applications you'll receive</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="skills">Required Skills</label>
+                    <input type="text" id="skills" placeholder="e.g., React, Node.js, MongoDB (separated by commas)" required>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Budget & Timeline</h3>
+                
+                <div class="info-box">
+                    <p><strong>💡 Tip:</strong> Be competitive with your budget to attract quality freelancers. Check recent similar jobs for market rates.</p>
+                </div>
+
+                <div class="inline-group">
+                    <div class="form-group">
+                        <label for="minBudget">Minimum Budget ($)</label>
+                        <input type="number" id="minBudget" placeholder="500" min="50" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxBudget">Maximum Budget ($)</label>
+                        <input type="number" id="maxBudget" placeholder="1000" min="50" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeline">Expected Timeline</label>
+                    <select id="timeline" required>
+                        <option value="">Select a timeline...</option>
+                        <option value="urgent">Urgent (less than 1 week)</option>
+                        <option value="short">Short (1-2 weeks)</option>
+                        <option value="medium">Medium (2-4 weeks)</option>
+                        <option value="long">Long (1-3 months)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Job Type</h3>
+                
+                <div class="form-group">
+                    <label for="jobType">Type of Engagement</label>
+                    <select id="jobType" required>
+                        <option value="">Select job type...</option>
+                        <option value="one-time">One-time project</option>
+                        <option value="ongoing">Ongoing project</option>
+                        <option value="contract">Fixed contract</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="level">Experience Level Required</label>
+                    <select id="level" required>
+                        <option value="">Select experience level...</option>
+                        <option value="entry">Entry Level</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="expert">Expert</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="submit-btn">Post Job</button>
+                <button type="button" class="cancel-btn" onclick="window.history.back();">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="role-manager.js"></script>
+    <script>
+        function submitJob(event) {
+            event.preventDefault();
+            const jobTitle = document.getElementById('jobTitle').value;
+            const minBudget = document.getElementById('minBudget').value;
+            const maxBudget = document.getElementById('maxBudget').value;
+            
+            alert(`Job Posted Successfully!\n\nTitle: ${jobTitle}\nBudget: $${minBudget} - $${maxBudget}\n\nFreelancers will start applying soon!`);
+            
+            // Save job data to localStorage
+            const jobData = {
+                title: jobTitle,
+                budget: `$${minBudget} - $${maxBudget}`,
+                timestamp: new Date().toLocaleString()
+            };
+            localStorage.setItem('lastJob', JSON.stringify(jobData));
+            
+            // Redirect to profile
+            window.location.href = 'client-profile.html';
+        }
+    </script>
+</body>
+</html>

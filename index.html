@@ -18,8 +18,93 @@
       src="https://kit.fontawesome.com/28580fa11d.js"
       crossorigin="anonymous"
     ></script>
+    <style>
+      .role-switcher {
+        background-color: #f5f5f5;
+        padding: 12px 0;
+        border-bottom: 1px solid #ddd;
+        position: relative;
+        z-index: 10;
+      }
+      .role-switcher-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .role-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 14px;
+        color: #666;
+      }
+      .role-badge {
+        background-color: #14a800;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+      .role-buttons {
+        display: flex;
+        gap: 10px;
+      }
+      .role-btn {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        background-color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.3s;
+      }
+      .role-btn.active {
+        background-color: #14a800;
+        color: white;
+        border-color: #14a800;
+      }
+      .role-btn:hover {
+        border-color: #14a800;
+      }
+    </style>
   </head>
   <body>
+    <!-- Role Switcher -->
+    <div class="role-switcher">
+      <div class="role-switcher-content">
+        <div class="role-info">
+          <span>👤 Current Role:</span>
+          <span class="role-badge" id="roleIndicator">Guest</span>
+        </div>
+        <div class="role-buttons">
+          <button class="role-btn" id="guestBtn" onclick="setRole('guest')">Guest</button>
+          <button class="role-btn" id="freelancerBtn" onclick="setRole('freelancer')">Freelancer</button>
+          <button class="role-btn" id="clientBtn" onclick="setRole('client')">Client</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="role-manager.js"></script>
+    <script>
+      function setRole(role) {
+        localStorage.setItem('userRole', role);
+        location.reload();
+      }
+
+      function updateRoleButtons() {
+        const role = localStorage.getItem('userRole') || 'guest';
+        document.getElementById('guestBtn').classList.toggle('active', role === 'guest');
+        document.getElementById('freelancerBtn').classList.toggle('active', role === 'freelancer');
+        document.getElementById('clientBtn').classList.toggle('active', role === 'client');
+      }
+
+      document.addEventListener('DOMContentLoaded', updateRoleButtons);
+    </script>
+
     <div class="first-page">
       <div class="two-navs-outer-box">
         <div class="two-navs">
@@ -30,16 +115,16 @@
             src="https://image.status.io/z6aeO6kAGsAG.png"
             alt=""
           />
-          <div class="item-left">
+          <a href="find-talent.html" class="item-left" data-role-hide="freelancer" style="text-decoration: none; color: inherit; display: none;">
             Find Talent <i class="fa-solid fa-angle-down"></i>
-          </div>
-          <div class="item-left">
+          </a>
+          <a href="find-work.html" class="item-left" data-role-hide="client" style="text-decoration: none; color: inherit; display: none;">
             Find Work <i class="fa-solid fa-angle-down"></i>
-          </div>
-          <div class="item-left">
+          </a>
+          <a href="why-upwork.html" class="item-left" style="text-decoration: none; color: inherit;">
             Why Upwork? <i class="fa-solid fa-angle-down"></i>
-          </div>
-          <div class="item-left">Enterprise</div>
+          </a>
+          <a href="enterprise.html" class="item-left" style="text-decoration: none; color: inherit;">Enterprise</a>
         </div>
         <div class="nav-container-right">
           <span class="input-top">
@@ -48,9 +133,10 @@
             </span>
           <input class="search" type="text" placeholder="Search"/>
           </span>
-          <a href="#">Log In</a>
-          <a href="#">Sign Up</a>
-          <a href="#" class="button sign-up">Earn as a pro</a>
+          <a href="login.html" data-role-show="guest" style="display: inline-block;">Log In</a>
+          <a href="signup.html" data-role-show="guest" style="display: inline-block;">Sign Up</a>
+          <a href="freelancer-profile.html" data-role="freelancer" style="display: none;">Profile</a>
+          <a href="client-profile.html" data-role="client" style="display: none;">Profile</a>
         </div>
       </nav>
       <hr class="nav-line" />
@@ -97,7 +183,7 @@
       Log In <i class="fa-solid fa-angle-down"></i>
     </div>
     <div class="mob-signup-container">
-    <a href="" class="signup-mob-button button">Signup</a>
+    <a href="signup.html" class="signup-mob-button button">Signup</a>
   </div>
   </div>
 </div>
@@ -110,7 +196,7 @@
                 Forget the old rules. You can have the best people. Right now.
                 Right here.
               </div>
-              <a href="#" class="button get-started">Get Started</a>
+              <a href="signup.html" class="button get-started">Get Started</a>
             </div>
             <div class="brands">
               <div class="trusted-by">Trusted by</div>
@@ -134,7 +220,7 @@
     </div>
     <div class="second-page">
       <div class="second-page-title">Browse talent by category</div>
-      <div class="second-page-subtitle">Looking for work? <a href="" class="browse"> Browse jobs</a></div>
+      <div class="second-page-subtitle">Looking for work? <a href="jobs.html" class="browse"> Browse jobs</a></div>
       <div class="small-cards">
         <div class="card">
           <div class="card-title">Development and IT</div>
@@ -230,7 +316,7 @@
           <li><i class="fa-solid fa-suitcase"></i> Control your workflow: hire, classify and pay your talent</li>
           <li><i class="fa-solid fa-headphones"></i> Partner with Upwork for end-to-end support</li>
         </ul>
-        <a href="" class="button learn-more">Learn More</a>
+        <a href="enterprise.html" class="button learn-more">Learn More</a>
       </div>
       <img class="woman-picture" src="https://res.cloudinary.com/upwork-cloud-acquisition-prod/image/upload/f_auto,q_auto/brontes/for-enterprise/enterprise-image@2x.png" alt="">
     </div>
@@ -298,7 +384,7 @@
         <div class="fourth-flex">Explore different ways to earn
         </div>
       </div>
-      <a href="" class="button fourth-button">Find opportunities</a>
+      <a href="jobs.html" class="button fourth-button">Find opportunities</a>
   </div>
  </div>
  </div>
@@ -502,6 +588,7 @@
 </div>
 </div>
   </footer>
+  <script src="role-manager.js"></script>
   <script src="srcipt.js"></script>
   </body>
 </html>
