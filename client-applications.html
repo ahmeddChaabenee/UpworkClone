@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications Received - Upwork</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="media.css">
+    <script src="https://kit.fontawesome.com/28580fa11d.js" crossorigin="anonymous"></script>
+    <style>
+        .applications-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .filter-btn.active {
+            background-color: #14a800;
+            color: white;
+            border-color: #14a800;
+        }
+        .job-group {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .job-header {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .job-header h3 {
+            margin: 0 0 5px 0;
+            font-size: 18px;
+        }
+        .job-header p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .applications-list {
+            padding: 20px;
+        }
+        .application-card {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: start;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .application-card:last-child {
+            border-bottom: none;
+        }
+        .freelancer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #14a800, #0d7d00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+        .application-details h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        .application-details p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        .bid-section {
+            text-align: right;
+        }
+        .bid-amount {
+            font-size: 24px;
+            font-weight: 600;
+            color: #14a800;
+            margin-bottom: 10px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-accept {
+            padding: 10px 20px;
+            background-color: #14a800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-reject {
+            padding: 10px 20px;
+            background-color: #ccc;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-view-profile {
+            padding: 10px 20px;
+            background-color: white;
+            color: #14a800;
+            border: 2px solid #14a800;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-accepted {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <!-- Role Switcher -->
+    <div style="background-color: #f5f5f5; padding: 12px 0; border-bottom: 1px solid #ddd; position: relative; z-index: 10;">
+      <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 15px; font-size: 14px; color: #666;">
+          <span>👤 Current Role:</span>
+          <span style="background-color: #14a800; color: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 12px;" id="roleIndicator">Guest</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="guestBtn" onclick="setRole('guest')">Guest</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="freelancerBtn" onclick="setRole('freelancer')">Freelancer</button>
+          <button style="padding: 8px 16px; border: 1px solid #ddd; background-color: white; border-radius: 4px; cursor: pointer; font-size: 13px;" id="clientBtn" onclick="setRole('client')">Client</button>
+        </div>
+      </div>
+    </div>
+    <script src="role-manager.js"></script>
+    <script>
+      function setRole(role) {
+        localStorage.setItem('userRole', role);
+        location.reload();
+      }
+      function updateRoleButtons() {
+        const role = localStorage.getItem('userRole') || 'guest';
+        document.getElementById('guestBtn').classList.toggle('active', role === 'guest');
+        document.getElementById('freelancerBtn').classList.toggle('active', role === 'freelancer');
+        document.getElementById('clientBtn').classList.toggle('active', role === 'client');
+      }
+      document.addEventListener('DOMContentLoaded', updateRoleButtons);
+    </script>
+
+    <nav class="first-nav">
+        <div class="nav-container-left">
+            <a href="index.html"><img class="logo" src="https://image.status.io/z6aeO6kAGsAG.png" alt="Upwork Logo"></a>
+            <a href="find-talent.html" class="item-left" style="text-decoration: none; color: inherit;">
+                Find Talent <i class="fa-solid fa-angle-down"></i>
+            </a>
+            <a href="why-upwork.html" class="item-left" style="text-decoration: none; color: inherit;">
+                Why Upwork? <i class="fa-solid fa-angle-down"></i>
+            </a>
+            <a href="enterprise.html" class="item-left" style="text-decoration: none; color: inherit;">Enterprise</a>
+        </div>
+        <div class="nav-container-right">
+            <a href="client-profile.html" style="margin-right: 20px;">Profile</a>
+            <a href="login.html">Log Out</a>
+        </div>
+    </nav>
+    <hr class="nav-line">
+
+    <div class="applications-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div>
+                <h1 style="margin-bottom: 10px;">Applications Received</h1>
+                <p style="color: #666; margin: 0;">Manage and review applications for your jobs</p>
+            </div>
+            <a href="post-work-form.html" style="padding: 12px 25px; background-color: #14a800; color: white; text-decoration: none; border-radius: 4px; font-weight: 600;">Post New Job</a>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterApplications('all')">All Applications</button>
+            <button class="filter-btn" onclick="filterApplications('pending')">Pending</button>
+            <button class="filter-btn" onclick="filterApplications('accepted')">Accepted</button>
+            <button class="filter-btn" onclick="filterApplications('rejected')">Rejected</button>
+        </div>
+
+        <!-- Applications by Job -->
+        <div id="applicationsContainer">
+            <!-- Job applications will be loaded here -->
+        </div>
+
+        <div id="emptyState" style="text-align: center; padding: 60px 20px; color: #999;">
+            <p style="font-size: 18px;">No applications yet</p>
+            <p>Start by <a href="find-talent.html" style="color: #14a800; text-decoration: none;">finding talent</a> or <a href="post-work-form.html" style="color: #14a800; text-decoration: none;">posting a job</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - Replace with PHP backend call
+        const applicationsData = [
+            {
+                jobId: 1,
+                jobTitle: 'Build a responsive website',
+                applications: [
+                    {
+                        id: 1,
+                        freelancerId: 1,
+                        freelancerName: 'John Developer',
+                        freelancerLocation: 'USA',
+                        bidAmount: 2400,
+                        coverLetter: 'I have extensive experience with React and Node.js. I can deliver this project on time with high quality.',
+                        rating: 4.95,
+                        status: 'pending'
+                    },
+                    {
+                        id: 2,
+                        freelancerId: 2,
+                        freelancerName: 'Sarah Designer',
+                        freelancerLocation: 'Canada',
+                        bidAmount: 2800,
+                        coverLetter: 'Great experience with responsive design and front-end development. Looking forward to working with you!',
+                        rating: 4.87,
+                        status: 'pending'
+                    }
+                ]
+            },
+            {
+                jobId: 3,
+                jobTitle: 'Mobile App Development',
+                applications: [
+                    {
+                        id: 3,
+                        freelancerId: 3,
+                        freelancerName: 'Mike Mobile',
+                        freelancerLocation: 'India',
+                        bidAmount: 4800,
+                        coverLetter: 'I have built several mobile apps using React Native. Perfect match for your requirements.',
+                        rating: 4.92,
+                        status: 'pending'
+                    }
+                ]
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function filterApplications(status) {
+            currentFilter = status;
+            renderApplications();
+            
+            // Update button styles
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function renderApplications() {
+            const container = document.getElementById('applicationsContainer');
+            const emptyState = document.getElementById('emptyState');
+            container.innerHTML = '';
+
+            let hasApplications = false;
+
+            applicationsData.forEach(job => {
+                const filtered = currentFilter === 'all' 
+                    ? job.applications 
+                    : job.applications.filter(app => app.status === currentFilter);
+
+                if (filtered.length === 0) return;
+
+                hasApplications = true;
+
+                const jobGroup = document.createElement('div');
+                jobGroup.className = 'job-group';
+
+                const jobHeader = document.createElement('div');
+                jobHeader.className = 'job-header';
+                jobHeader.innerHTML = `
+                    <h3>${job.jobTitle}</h3>
+                    <p>📋 Job ID: #${job.jobId} • ${filtered.length} application${filtered.length > 1 ? 's' : ''}</p>
+                `;
+
+                const applicationsList = document.createElement('div');
+                applicationsList.className = 'applications-list';
+
+                filtered.forEach(app => {
+                    const card = document.createElement('div');
+                    card.className = 'application-card';
+
+                    let statusClass = `status-${app.status}`;
+                    let statusText = app.status.charAt(0).toUpperCase() + app.status.slice(1);
+
+                    card.innerHTML = `
+                        <div class="freelancer-avatar">👨‍💼</div>
+                        <div class="application-details">
+                            <h4>${app.freelancerName}</h4>
+                            <p>⭐ ${app.rating}/5 • 📍 ${app.freelancerLocation}</p>
+                            <div class="status-badge ${statusClass}">${statusText}</div>
+                            <p><strong>Bid Amount:</strong> $${app.bidAmount}</p>
+                            <p><strong>Message:</strong> "${app.coverLetter}"</p>
+                        </div>
+                        <div class="bid-section">
+                            <div class="bid-amount">$${app.bidAmount}</div>
+                            <div class="action-buttons">
+                                ${app.status === 'pending' ? `
+                                    <button class="btn-accept" onclick="acceptApplication(${app.id})">Accept</button>
+                                    <button class="btn-reject" onclick="rejectApplication(${app.id})">Reject</button>
+                                ` : ''}
+                                <button class="btn-view-profile" onclick="viewProfile(${app.freelancerId})">Profile</button>
+                            </div>
+                        </div>
+                    `;
+
+                    applicationsList.appendChild(card);
+                });
+
+                jobGroup.appendChild(jobHeader);
+                jobGroup.appendChild(applicationsList);
+                container.appendChild(jobGroup);
+            });
+
+            emptyState.style.display = hasApplications ? 'none' : 'block';
+        }
+
+        function acceptApplication(appId) {
+            alert(`Application ${appId} accepted!`);
+            // TODO: Send to PHP backend
+        }
+
+        function rejectApplication(appId) {
+            alert(`Application ${appId} rejected!`);
+            // TODO: Send to PHP backend
+        }
+
+        function viewProfile(freelancerId) {
+            alert(`View profile for freelancer ${freelancerId}`);
+            // TODO: Redirect to freelancer profile or modal
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', renderApplications);
+    </script>
+</body>
+</html>

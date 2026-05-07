@@ -95,50 +95,124 @@
             </div>
             <button onclick="redirectToPostJob()" style="padding: 12px 25px; background-color: #14a800; color: white; border: none; text-decoration: none; border-radius: 4px; font-weight: 600; display: inline-block; cursor: pointer;">Post a Job</button>
         </div>
-        
-        <div class="talent-categories">
-            <div class="talent-card">
-                <h3>Development & IT</h3>
-                <p>Web developers, software engineers, DevOps specialists, and more</p>
-                <p style="margin-top: 15px;"><strong>⭐ 4.85/5 rating</strong></p>
-                <p style="font-size: 12px; color: #999;">1,853 skills</p>
-            </div>
-            
-            <div class="talent-card">
-                <h3>Design & Creative</h3>
-                <p>Graphic designers, UI/UX designers, animation specialists, and more</p>
-                <p style="margin-top: 15px;"><strong>⭐ 4.91/5 rating</strong></p>
-                <p style="font-size: 12px; color: #999;">1,876 skills</p>
-            </div>
-            
-            <div class="talent-card">
-                <h3>Sales & Marketing</h3>
-                <p>Digital marketers, content strategists, social media experts, and more</p>
-                <p style="margin-top: 15px;"><strong>⭐ 4.77/5 rating</strong></p>
-                <p style="font-size: 12px; color: #999;">1,982 skills</p>
-            </div>
-            
-            <div class="talent-card">
-                <h3>Writing & Translation</h3>
-                <p>Copywriters, translators, content writers, and more</p>
-                <p style="margin-top: 15px;"><strong>⭐ 4.92/5 rating</strong></p>
-                <p style="font-size: 12px; color: #999;">1,832 skills</p>
-            </div>
-            
-            <div class="talent-card">
-                <h3>Admin & Customer Support</h3>
-                <p>Virtual assistants, customer service reps, and more</p>
-                <p style="margin-top: 15px;"><strong>⭐ 4.77/5 rating</strong></p>
-                <p style="font-size: 12px; color: #999;">1,987 skills</p>
-            </div>
-            
-            <div class="talent-card">
-                <h3>Finance & Accounting</h3>
-                <p>Accountants, bookkeepers, financial analysts, and more</p>
-                <p style="margin-top: 15px;"><strong>⭐ 4.79/5 rating</strong></p>
-                <p style="font-size: 12px; color: #999;">1,867 skills</p>
+
+        <!-- Category Filter -->
+        <div style="margin-bottom: 40px;">
+            <h3 style="margin-bottom: 15px;">Select Category</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                <button onclick="filterFreelancersByCategory('all')" class="category-filter-btn" style="padding: 12px; border: 2px solid #14a800; background-color: #14a800; color: white; border-radius: 4px; cursor: pointer; font-weight: 600;">All Categories</button>
+                <button onclick="filterFreelancersByCategory(1)" class="category-filter-btn" style="padding: 12px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Backend</button>
+                <button onclick="filterFreelancersByCategory(2)" class="category-filter-btn" style="padding: 12px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Frontend</button>
+                <button onclick="filterFreelancersByCategory(3)" class="category-filter-btn" style="padding: 12px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Database</button>
+                <button onclick="filterFreelancersByCategory(4)" class="category-filter-btn" style="padding: 12px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Design</button>
+                <button onclick="filterFreelancersByCategory(5)" class="category-filter-btn" style="padding: 12px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Full Stack</button>
+                <button onclick="filterFreelancersByCategory(6)" class="category-filter-btn" style="padding: 12px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Mobile</button>
+                <button onclick="filterFreelancersByCategory(7)" class="category-filter-btn" style="padding: 12px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">CMS</button>
             </div>
         </div>
+
+        <!-- Freelancers List -->
+        <div id="freelancers-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+            <!-- Freelancers will be loaded here -->
+        </div>
     </div>
+
+    <script>
+        // Sample data - Replace with PHP backend call
+        const freelancers = [
+            {
+                id: 1,
+                name: 'John Developer',
+                primary_category_id: 1,
+                title: 'Full Stack Developer',
+                bio: 'Experienced web developer with 5 years in PHP and JavaScript',
+                rating: 4.95,
+                hourly_rate: 50,
+                location: 'USA'
+            }
+        ];
+
+        const categories = {
+            'all': 'All Categories',
+            1: 'Backend',
+            2: 'Frontend',
+            3: 'Database',
+            4: 'Design',
+            5: 'Full Stack',
+            6: 'Mobile',
+            7: 'CMS'
+        };
+
+        let selectedCategory = 'all';
+
+        function filterFreelancersByCategory(categoryId) {
+            selectedCategory = categoryId;
+            updateFreelancersList();
+            
+            // Update button styles
+            document.querySelectorAll('.category-filter-btn').forEach(btn => {
+                btn.style.backgroundColor = 'white';
+                btn.style.color = '#666';
+                btn.style.border = '1px solid #ddd';
+            });
+            event.target.style.backgroundColor = '#14a800';
+            event.target.style.color = 'white';
+            event.target.style.border = '2px solid #14a800';
+        }
+
+        function updateFreelancersList() {
+            const freelancersList = document.getElementById('freelancers-list');
+            freelancersList.innerHTML = '';
+
+            const filtered = selectedCategory === 'all' 
+                ? freelancers 
+                : freelancers.filter(f => f.primary_category_id == selectedCategory);
+
+            if (filtered.length === 0) {
+                freelancersList.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">No freelancers available in this category</p>';
+                return;
+            }
+
+            filtered.forEach(freelancer => {
+                const card = document.createElement('div');
+                card.style.cssText = 'border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s;';
+                card.onmouseover = () => card.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                card.onmouseout = () => card.style.boxShadow = 'none';
+                card.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #14a800, #0d7d00); display: flex; align-items: center; justify-content: center; font-size: 40px; color: white; margin: 0 auto; margin-bottom: 10px;">👨‍💼</div>
+                        <h3 style="margin: 0;">${freelancer.name}</h3>
+                        <p style="color: #666; margin: 5px 0;">${freelancer.title}</p>
+                        <p style="color: #999; font-size: 12px; margin: 5px 0;">📍 ${freelancer.location}</p>
+                    </div>
+                    <div style="margin: 15px 0; padding: 15px 0; border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0;">
+                        <p style="margin: 5px 0; color: #666; font-size: 14px;">${freelancer.bio}</p>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
+                        <div>
+                            <span style="color: #ffc107;">⭐ ${freelancer.rating}/5</span>
+                        </div>
+                        <div>
+                            <span style="color: #14a800; font-weight: 600;">$${freelancer.hourly_rate}/hr</span>
+                        </div>
+                    </div>
+                    <button onclick="viewFreelancerProfile(${freelancer.id})" style="width: 100%; padding: 10px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">View Profile</button>
+                `;
+                freelancersList.appendChild(card);
+            });
+        }
+
+        function viewFreelancerProfile(freelancerId) {
+            // TODO: Redirect to freelancer profile or modal
+            alert(`View profile for freelancer ${freelancerId}`);
+        }
+
+        function redirectToPostJob() {
+            window.location.href = 'post-work-form.html';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', updateFreelancersList);
+    </script>
 </body>
 </html>

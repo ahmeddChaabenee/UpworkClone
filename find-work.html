@@ -64,59 +64,125 @@
     <div style="max-width: 1200px; margin: 50px auto; padding: 20px;">
         <h1 style="margin-bottom: 30px;">Find Work Opportunities</h1>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-            <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                    <div>
-                        <h3 style="margin-top: 0;">Web Development Project</h3>
-                        <p style="color: #666; font-size: 14px;">Intermediate</p>
-                    </div>
-                    <span style="background-color: #14a800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px;">$500-$1000</span>
-                </div>
-                <p>Looking for a developer to build a responsive website with modern design and fast performance.</p>
-                <p style="color: #999; font-size: 12px;">Posted 2 days ago</p>
-                <button onclick="redirectToApplyJob()" style="display: block; padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; box-sizing: border-box;">Apply Now</button>
-            </div>
-            
-            <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                    <div>
-                        <h3 style="margin-top: 0;">Logo Design</h3>
-                        <p style="color: #666; font-size: 14px;">Beginner-Intermediate</p>
-                    </div>
-                    <span style="background-color: #14a800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px;">$200-$500</span>
-                </div>
-                <p>Need a modern, professional logo for my tech startup. Must work well in all formats.</p>
-                <p style="color: #999; font-size: 12px;">Posted 1 day ago</p>
-                <button onclick="redirectToApplyJob()" style="display: block; padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; box-sizing: border-box;">Apply Now</button>
-            </div>
-            
-            <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                    <div>
-                        <h3 style="margin-top: 0;">Blog Content Writing</h3>
-                        <p style="color: #666; font-size: 14px;">Intermediate</p>
-                    </div>
-                    <span style="background-color: #14a800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px;">$300-$600</span>
-                </div>
-                <p>Writing 10 high-quality blog posts about technology trends. Must include SEO optimization.</p>
-                <p style="color: #999; font-size: 12px;">Posted 3 days ago</p>
-                <button onclick="redirectToApplyJob()" style="display: block; padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; box-sizing: border-box;">Apply Now</button>
-            </div>
-            
-            <div style="border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                    <div>
-                        <h3 style="margin-top: 0;">Social Media Management</h3>
-                        <p style="color: #666; font-size: 14px;">Intermediate</p>
-                    </div>
-                    <span style="background-color: #14a800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px;">$800-$1500</span>
-                </div>
-                <p>Manage social media accounts for a growing e-commerce brand. 3-month contract.</p>
-                <p style="color: #999; font-size: 12px;">Posted 1 day ago</p>
-                <button onclick="redirectToApplyJob()" style="display: block; padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; box-sizing: border-box;">Apply Now</button>
+        <!-- Category Filter -->
+        <div style="margin-bottom: 40px;">
+            <h3 style="margin-bottom: 15px;">Filter by Category</h3>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button onclick="filterJobsByCategory('all')" class="category-btn" style="padding: 10px 20px; border: 2px solid #14a800; background-color: #14a800; color: white; border-radius: 4px; cursor: pointer; font-weight: 600;">All</button>
+                <button onclick="filterJobsByCategory(1)" class="category-btn" style="padding: 10px 20px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Backend</button>
+                <button onclick="filterJobsByCategory(2)" class="category-btn" style="padding: 10px 20px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Frontend</button>
+                <button onclick="filterJobsByCategory(3)" class="category-btn" style="padding: 10px 20px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Database</button>
+                <button onclick="filterJobsByCategory(4)" class="category-btn" style="padding: 10px 20px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Design</button>
+                <button onclick="filterJobsByCategory(5)" class="category-btn" style="padding: 10px 20px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Full Stack</button>
+                <button onclick="filterJobsByCategory(6)" class="category-btn" style="padding: 10px 20px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">Mobile</button>
+                <button onclick="filterJobsByCategory(7)" class="category-btn" style="padding: 10px 20px; border: 1px solid #ddd; background-color: white; color: #666; border-radius: 4px; cursor: pointer;">CMS</button>
             </div>
         </div>
+
+        <!-- Jobs List -->
+        <div id="jobs-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            <!-- Jobs will be loaded here by JavaScript -->
+        </div>
     </div>
+
+    <script>
+        // Sample data - Replace with PHP backend call
+        const jobs = [
+            {
+                id: 1,
+                title: 'Build a responsive website',
+                description: 'We need a modern, responsive website built with React and Node.js backend',
+                category_id: 5,
+                budget: 2500,
+                experience_level: 'expert',
+                posted_days_ago: 2
+            },
+            {
+                id: 2,
+                title: 'WordPress Theme Customization',
+                description: 'Customize an existing WordPress theme for our business needs',
+                category_id: 7,
+                budget: 500,
+                experience_level: 'intermediate',
+                posted_days_ago: 1
+            },
+            {
+                id: 3,
+                title: 'Mobile App Development',
+                description: 'Create a mobile app using React Native',
+                category_id: 6,
+                budget: 5000,
+                experience_level: 'expert',
+                posted_days_ago: 3
+            }
+        ];
+
+        const categories = {
+            1: 'Backend',
+            2: 'Frontend',
+            3: 'Database',
+            4: 'Design',
+            5: 'Full Stack',
+            6: 'Mobile',
+            7: 'CMS'
+        };
+
+        let selectedCategory = 'all';
+
+        function filterJobsByCategory(categoryId) {
+            selectedCategory = categoryId;
+            updateJobsList();
+            
+            // Update button styles
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.style.backgroundColor = 'white';
+                btn.style.color = '#666';
+                btn.style.border = '1px solid #ddd';
+            });
+            event.target.style.backgroundColor = '#14a800';
+            event.target.style.color = 'white';
+            event.target.style.border = '2px solid #14a800';
+        }
+
+        function updateJobsList() {
+            const jobsList = document.getElementById('jobs-list');
+            jobsList.innerHTML = '';
+
+            const filtered = selectedCategory === 'all' 
+                ? jobs 
+                : jobs.filter(job => job.category_id == selectedCategory);
+
+            if (filtered.length === 0) {
+                jobsList.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">No jobs available in this category</p>';
+                return;
+            }
+
+            filtered.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.style.cssText = 'border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px;';
+                jobCard.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <h3 style="margin-top: 0;">${job.title}</h3>
+                            <p style="color: #666; font-size: 14px;">${job.experience_level.charAt(0).toUpperCase() + job.experience_level.slice(1)}</p>
+                            <p style="color: #999; font-size: 12px;">Category: ${categories[job.category_id]}</p>
+                        </div>
+                        <span style="background-color: #14a800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px;">$${job.budget}</span>
+                    </div>
+                    <p>${job.description}</p>
+                    <p style="color: #999; font-size: 12px;">Posted ${job.posted_days_ago} day${job.posted_days_ago > 1 ? 's' : ''} ago</p>
+                    <button onclick="applyJob(${job.id})" style="display: block; padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; box-sizing: border-box;">Apply Now</button>
+                `;
+                jobsList.appendChild(jobCard);
+            });
+        }
+
+        function applyJob(jobId) {
+            window.location.href = `apply-work-form.html?jobId=${jobId}`;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', updateJobsList);
+    </script>
 </body>
 </html>

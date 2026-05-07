@@ -51,27 +51,47 @@
     <div style="max-width: 500px; margin: 100px auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
         <h1 style="text-align: center; margin-bottom: 30px;">Sign Up for Upwork</h1>
         
-        <form style="display: flex; flex-direction: column; gap: 15px;">
-            <div>
-                <label for="fullname" style="display: block; margin-bottom: 5px; font-weight: 500;">Full Name</label>
-                <input type="text" id="fullname" placeholder="John Doe" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+        <form id="signupForm" style="display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                    <label for="firstName" style="display: block; margin-bottom: 5px; font-weight: 500;">First Name</label>
+                    <input type="text" id="firstName" placeholder="John" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
+                <div>
+                    <label for="lastName" style="display: block; margin-bottom: 5px; font-weight: 500;">Last Name</label>
+                    <input type="text" id="lastName" placeholder="Doe" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
             </div>
             
             <div>
                 <label for="email" style="display: block; margin-bottom: 5px; font-weight: 500;">Email Address</label>
-                <input type="email" id="email" placeholder="you@example.com" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                <input type="email" id="email" placeholder="you@example.com" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </div>
             
             <div>
                 <label for="password" style="display: block; margin-bottom: 5px; font-weight: 500;">Password</label>
-                <input type="password" id="password" placeholder="Enter your password" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                <input type="password" id="password" placeholder="Enter your password" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             </div>
             
             <div>
                 <label style="display: flex; align-items: center; gap: 10px;">
-                    <input type="checkbox" style="width: 18px; height: 18px;">
+                    <input type="checkbox" id="isFrelancer" style="width: 18px; height: 18px;" onchange="toggleCategoryField()">
                     <span>I'm looking for work (Freelancer)</span>
                 </label>
+            </div>
+
+            <div id="categoryField" style="display: none;">
+                <label for="primaryCategory" style="display: block; margin-bottom: 5px; font-weight: 500;">Select Your Primary Category</label>
+                <select id="primaryCategory" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                    <option value="">-- Select Category --</option>
+                    <option value="1">Backend</option>
+                    <option value="2">Frontend</option>
+                    <option value="3">Database</option>
+                    <option value="4">Design</option>
+                    <option value="5">Full Stack</option>
+                    <option value="6">Mobile</option>
+                    <option value="7">CMS</option>
+                </select>
             </div>
             
             <button type="submit" style="padding: 12px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: 500;">Sign Up</button>
@@ -79,5 +99,32 @@
         
         <p style="text-align: center; margin-top: 20px;">Already have an account? <a href="login.html">Log In</a></p>
     </div>
+
+    <script>
+        function toggleCategoryField() {
+            const isFreelancer = document.getElementById('isFrelancer').checked;
+            document.getElementById('categoryField').style.display = isFreelancer ? 'block' : 'none';
+            if (!isFreelancer) {
+                document.getElementById('primaryCategory').value = '';
+            }
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                role: document.getElementById('isFrelancer').checked ? 'freelancer' : 'client',
+                primaryCategory: document.getElementById('isFrelancer').checked ? document.getElementById('primaryCategory').value : null
+            };
+
+            console.log('Form Data:', formData);
+            alert('Sign up submitted! (Connect to PHP backend)');
+            // TODO: Send to PHP backend
+        });
+    </script>
 </body>
 </html>

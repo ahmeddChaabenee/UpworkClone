@@ -211,10 +211,23 @@
 
         <div class="section" id="profileForm" style="display: none;">
             <h2>Edit Your Profile</h2>
-            <form onsubmit="saveProfile(event)">
+            <form id="editProfileForm" onsubmit="saveProfile(event)">
                 <div class="form-group">
                     <label for="fullname">Full Name</label>
                     <input type="text" id="fullname" value="John Developer" required>
+                </div>
+                <div class="form-group">
+                    <label for="primaryCategory">Primary Category *</label>
+                    <select id="primaryCategory" onchange="loadAvailableSkills()" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; box-sizing: border-box;">
+                        <option value="">-- Select Category --</option>
+                        <option value="1">Backend</option>
+                        <option value="2">Frontend</option>
+                        <option value="3">Database</option>
+                        <option value="4">Design</option>
+                        <option value="5">Full Stack</option>
+                        <option value="6">Mobile</option>
+                        <option value="7">CMS</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="title">Professional Title</label>
@@ -232,19 +245,37 @@
                     <label for="hourlyRate">Hourly Rate ($)</label>
                     <input type="number" id="hourlyRate" value="75" min="5" required>
                 </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" value="USA" placeholder="Your location">
+                </div>
                 <button type="submit" class="save-btn">Save Changes</button>
                 <button type="button" class="save-btn" style="background-color: #999; margin-left: 10px;" onclick="document.getElementById('profileForm').style.display = 'none'; document.querySelector('.edit-btn').style.display = 'block';">Cancel</button>
             </form>
         </div>
 
         <div class="section">
-            <h2>Skills</h2>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">React</span>
-                <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">Node.js</span>
-                <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">JavaScript</span>
-                <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">MongoDB</span>
-                <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">REST API</span>
+            <h2>Your Skills</h2>
+            <div id="skillsManagement">
+                <div style="margin-bottom: 15px;">
+                    <label for="addSkillSelect" style="display: block; margin-bottom: 5px; font-weight: 500;">Add a Skill</label>
+                    <div style="display: flex; gap: 10px;">
+                        <select id="addSkillSelect" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit;">
+                            <option value="">-- Select a skill --</option>
+                        </select>
+                        <button type="button" onclick="addSkillToProfile()" style="padding: 10px 20px; background-color: #14a800; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Add</button>
+                    </div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <p style="font-weight: 600; margin-bottom: 10px;">Your Skills:</p>
+                    <div id="skillsListDisplay" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">React</span>
+                        <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">Node.js</span>
+                        <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">JavaScript</span>
+                        <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">MongoDB</span>
+                        <span style="background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px;">REST API</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -267,14 +298,102 @@
 
     <script src="role-manager.js"></script>
     <script>
+        // Skills by category
+        const skillsByCategory = {
+            1: ['PHP', 'Node.js', 'Python'],
+            2: ['JavaScript', 'React', 'Vue.js', 'HTML/CSS'],
+            3: ['MySQL', 'MongoDB', 'PostgreSQL'],
+            4: ['UI/UX Design', 'Figma', 'Adobe XD'],
+            5: ['Web Development', 'Full Stack', 'REST APIs'],
+            6: ['Mobile Development', 'React Native', 'Flutter'],
+            7: ['WordPress', 'CMS', 'Plugin Development']
+        };
+
+        let currentSkills = ['React', 'Node.js', 'JavaScript', 'MongoDB', 'REST API'];
+
+        function loadAvailableSkills() {
+            const categoryId = document.getElementById('primaryCategory').value;
+            const select = document.getElementById('addSkillSelect');
+            select.innerHTML = '<option value="">-- Select a skill --</option>';
+
+            if (!categoryId) return;
+
+            const skills = skillsByCategory[categoryId] || [];
+            skills.forEach(skill => {
+                if (!currentSkills.includes(skill)) {
+                    const option = document.createElement('option');
+                    option.value = skill;
+                    option.textContent = skill;
+                    select.appendChild(option);
+                }
+            });
+        }
+
+        function addSkillToProfile() {
+            const select = document.getElementById('addSkillSelect');
+            const skill = select.value;
+
+            if (!skill) {
+                alert('Please select a skill');
+                return;
+            }
+
+            if (currentSkills.includes(skill)) {
+                alert('This skill is already added');
+                return;
+            }
+
+            currentSkills.push(skill);
+            updateSkillsDisplay();
+            select.value = '';
+        }
+
+        function removeSkill(skill) {
+            currentSkills = currentSkills.filter(s => s !== skill);
+            updateSkillsDisplay();
+            loadAvailableSkills();
+        }
+
+        function updateSkillsDisplay() {
+            const display = document.getElementById('skillsListDisplay');
+            display.innerHTML = '';
+
+            currentSkills.forEach(skill => {
+                const span = document.createElement('span');
+                span.style.cssText = 'background-color: #f0f0f0; padding: 8px 15px; border-radius: 20px; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;';
+                span.innerHTML = `${skill} <button type="button" onclick="removeSkill('${skill}')" style="background: none; border: none; color: #666; cursor: pointer; font-size: 16px; padding: 0;">×</button>`;
+                display.appendChild(span);
+            });
+        }
+
         function saveProfile(event) {
             event.preventDefault();
             const name = document.getElementById('fullname').value;
+            const category = document.getElementById('primaryCategory').value;
+            
+            if (!category) {
+                alert('Please select a primary category');
+                return;
+            }
+
+            const profileData = {
+                name: name,
+                title: document.getElementById('title').value,
+                email: document.getElementById('email').value,
+                bio: document.getElementById('bio').value,
+                hourlyRate: document.getElementById('hourlyRate').value,
+                location: document.getElementById('location').value,
+                primaryCategory: category,
+                skills: currentSkills
+            };
+
+            console.log('Profile Data:', profileData);
             document.getElementById('displayName').textContent = name;
             localStorage.setItem('freelancerName', name);
             document.getElementById('profileForm').style.display = 'none';
             document.querySelector('.edit-btn').style.display = 'inline-block';
             alert('Profile updated successfully!');
+            // TODO: Send to PHP backend
         }
 
         // Load saved profile on page load
@@ -284,6 +403,7 @@
                 document.getElementById('fullname').value = savedName;
                 document.getElementById('displayName').textContent = savedName;
             }
+            updateSkillsDisplay();
         });
     </script>
 </body>
